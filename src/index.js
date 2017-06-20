@@ -9,9 +9,10 @@ Data: Customize the data below as you please.
 const SKILL_NAME = "Quirky Haikus";
 const GET_HAIKU_MESSAGE = "I have a quirky haiku for you: ";
 const HELP_MESSAGE = "You can say tell me a haiku... or not.";
-const HELP_REPROMPT = "I have some awesome haikus in my repartoire. Just tell me to read one to you.";
+const HELP_REPROMPT = "I have some awesome haikus in my repertoire. Just ask me to read one to you.";
 const STOP_MESSAGE = "See you later!";
 
+// Each haiku is written within two single backticks and all haikus are seperated by commas.
 const data = [
   `Haikus are easy.
   But sometimes they don't make sense.
