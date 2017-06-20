@@ -2,7 +2,7 @@
 
 ## Description
 
-Ask Alexa to `Ask Silly Haiku` to tell you a haiku, and Alexa will tell you a random Haiku.
+Ask Alexa to `Ask Silly Haikus` to tell you a haiku, and Alexa will tell you a random Haiku.
 
 ## Setup
 
