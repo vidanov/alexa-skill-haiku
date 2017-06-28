@@ -32,7 +32,7 @@ Execution Code: Avoid editing the code below if you don't know JavaScript.
 ***********/
 
 const handlers = {
-  'LaunchRequest': function(){
+  'NewSession': function(){
     this.emit('GetHaikuIntent');
   },
   'GetHaikuIntent': function(){
@@ -49,6 +49,9 @@ const handlers = {
   },
   'AMAZON.StopIntent': function(){
     this.emit(':tell', STOP_MESSAGE);
+  },
+  'Unhandled': function(){
+    this.emit(':tell', HELP_MESSAGE)
   }
 };
 
