@@ -14,17 +14,17 @@ const STOP_MESSAGE = "See you later!";
 
 // Each haiku is written within two single backticks and all haikus are seperated by commas.
 const data = [
-  `Haikus are easy.
-  But sometimes they don't make sense.
-  Refrigerator`,
+  `Berlin is a place.
+  Full of historical stuff.
+  Come and visit us`,
 
-  `You never feed me.
-  Perhaps I'll sleep on your face.
-  That will sure show you`,
+  `The last page is full.
+  Scribbled notes and reminders.
+  Goodbye dear notebook`,
 
-  `I wake, reluctant.
-  Too cold to get out of bed.
-  But I need to pee.`
+  `The alarm goes off.
+  Blaring siren of my work.
+  I need some coffee.`
 ];
 
 /***********
