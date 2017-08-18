@@ -6,7 +6,7 @@ const APP_ID = undefined;
 Data: Customize the data below as you please.
 ***********/
 
-const SKILL_NAME = "Haikus";
+const SKILL_NAME = "Haiku Reader";
 const GET_HAIKU_MESSAGE = "I have a haiku for you: ";
 const HELP_MESSAGE = "You can say tell me a haiku... or not.";
 const HELP_REPROMPT = "I have some awesome haikus in my repertoire. Just ask me to read one to you.";
