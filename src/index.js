@@ -26,6 +26,19 @@ const data = [
   Blaring siren of my work.
   I need some coffee.`
 ];
+const dataEcho = [
+  `Berlin is a place 
+  Full of historical stuff
+  Come and visit us`,
+
+  `The last page is full
+  Scribbled notes and reminders
+  Goodbye dear notebook`,
+
+  `The alarm goes off
+  Blaring siren of my work
+  I need some coffee.`
+];
 
 /***********
 Execution Code: Avoid editing the code below if you don't know JavaScript.
@@ -39,7 +52,8 @@ const handlers = {
     const randomHaikuIndex = Math.floor(Math.random() * data.length);
     const randomHaiku = data[randomHaikuIndex];
     const speechOutput = GET_HAIKU_MESSAGE + randomHaiku;
-    this.emit(':tellWithCard', speechOutput, SKILL_NAME, randomHaiku);
+    const showOutput = dataEcho[randomHaikuIndex];
+    this.emit(':tellWithCard', speechOutput, SKILL_NAME, showOutput);
   },
   'AMAZON.HelpIntent': function(){
     this.emit(':ask', HELP_MESSAGE, HELP_REPROMPT);
