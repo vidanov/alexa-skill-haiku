@@ -11,6 +11,7 @@ const GET_HAIKU_MESSAGE = "I have a haiku for you: ";
 const HELP_MESSAGE = "You can say tell me a haiku... or not.";
 const HELP_REPROMPT = "I have some awesome haikus in my repertoire. Just ask me to read one to you.";
 const STOP_MESSAGE = "See you later!";
+const QUESTION_MESSAGE = " <break time='1s'/> Do you want to hear another haiku?";
 
 // Each haiku is written within two single backticks and all haikus are seperated by commas.
 const data = [
@@ -51,15 +52,21 @@ const handlers = {
   'GetHaikuIntent': function(){
     const randomHaikuIndex = Math.floor(Math.random() * data.length);
     const randomHaiku = data[randomHaikuIndex];
-    const speechOutput = GET_HAIKU_MESSAGE + randomHaiku;
+    const speechOutput = GET_HAIKU_MESSAGE + randomHaiku + QUESTION_MESSAGE;
     const showOutput = dataEcho[randomHaikuIndex];
-    this.emit(':tellWithCard', speechOutput, SKILL_NAME, showOutput);
+    this.emit(':askWithCard', speechOutput, SKILL_NAME, showOutput);
   },
   'AMAZON.HelpIntent': function(){
     this.emit(':ask', HELP_MESSAGE, HELP_REPROMPT);
   },
   'AMAZON.CancelIntent': function(){
     this.emit(':tell', STOP_MESSAGE);
+  },
+  'AMAZON.YesIntent': function(){
+   this.emit('GetHaikuIntent');
+  },
+  'AMAZON.NoIntent': function(){
+      this.emit('AMAZON.StopIntent');
   },
   'AMAZON.StopIntent': function(){
     this.emit(':tell', STOP_MESSAGE);
