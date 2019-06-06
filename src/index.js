@@ -1,18 +1,87 @@
-'use strict';
-const Alexa = require('alexa-sdk');
-const APP_ID = undefined;
+/* eslint-disable  func-names */
+/* eslint-disable  no-console */
 
-/***********
-Data: Customize the data below as you please.
-***********/
+const Alexa = require('ask-sdk');
 
-const SKILL_NAME = "Haiku Reader";
-const GET_HAIKU_MESSAGE = "I have a haiku for you: ";
-const HELP_MESSAGE = "You can say tell me a haiku... or not.";
-const HELP_REPROMPT = "I have some awesome haikus in my repertoire. Just ask me to read one to you.";
-const STOP_MESSAGE = "See you later!";
+const GetNewFactHandler = {
+  canHandle(handlerInput) {
+    const request = handlerInput.requestEnvelope.request;
+    return request.type === 'LaunchRequest'
+      || (request.type === 'IntentRequest');
+  },
+  handle(handlerInput) {
+    const factArr = data;
+    const factIndex = Math.floor(Math.random() * factArr.length);
+    const randomFact = factArr[factIndex];
+    const speechOutput = GET_FACT_MESSAGE + randomFact;
 
-// Each haiku is written within two single backticks and all haikus are seperated by commas.
+    return handlerInput.responseBuilder
+      .speak(speechOutput)
+      .withSimpleCard(SKILL_NAME, randomFact)
+      .getResponse();
+  },
+};
+
+const HelpHandler = {
+  canHandle(handlerInput) {
+    const request = handlerInput.requestEnvelope.request;
+    return request.type === 'IntentRequest'
+      && request.intent.name === 'AMAZON.HelpIntent';
+  },
+  handle(handlerInput) {
+    return handlerInput.responseBuilder
+      .speak(HELP_MESSAGE)
+      .reprompt(HELP_REPROMPT)
+      .getResponse();
+  },
+};
+
+const ExitHandler = {
+  canHandle(handlerInput) {
+    const request = handlerInput.requestEnvelope.request;
+    return request.type === 'IntentRequest'
+      && (request.intent.name === 'AMAZON.CancelIntent'
+        || request.intent.name === 'AMAZON.StopIntent');
+  },
+  handle(handlerInput) {
+    return handlerInput.responseBuilder
+      .speak(STOP_MESSAGE)
+      .getResponse();
+  },
+};
+
+const SessionEndedRequestHandler = {
+  canHandle(handlerInput) {
+    const request = handlerInput.requestEnvelope.request;
+    return request.type === 'SessionEndedRequest';
+  },
+  handle(handlerInput) {
+    console.log(`Session ended with reason: ${handlerInput.requestEnvelope.request.reason}`);
+
+    return handlerInput.responseBuilder.getResponse();
+  },
+};
+
+const ErrorHandler = {
+  canHandle() {
+    return true;
+  },
+  handle(handlerInput, error) {
+    console.log(`Error handled: ${error.message}`);
+
+    return handlerInput.responseBuilder
+      .speak('Sorry, an error occurred.')
+      .reprompt('Sorry, an error occurred.')
+      .getResponse();
+  },
+};
+
+const SKILL_NAME = 'Haiku Reader';
+const GET_FACT_MESSAGE = 'I have a haiku for you: ';
+const HELP_MESSAGE = 'You can say tell me a haiku...  or, you can say stop... What can I help you with?';
+const HELP_REPROMPT = 'You can ask me to tell a haiku or exit to stop. What can I help you with?';
+const STOP_MESSAGE = 'Goodbye!';
+
 const data = [
   `Berlin is a place.
   Full of historical stuff.
@@ -27,37 +96,14 @@ const data = [
   I need some coffee.`
 ];
 
-/***********
-Execution Code: Avoid editing the code below if you don't know JavaScript.
-***********/
+const skillBuilder = Alexa.SkillBuilders.standard();
 
-const handlers = {
-  'NewSession': function(){
-    this.emit('GetHaikuIntent');
-  },
-  'GetHaikuIntent': function(){
-    const randomHaikuIndex = Math.floor(Math.random() * data.length);
-    const randomHaiku = data[randomHaikuIndex];
-    const speechOutput = GET_HAIKU_MESSAGE + randomHaiku;
-    this.emit(':tellWithCard', speechOutput, SKILL_NAME, randomHaiku);
-  },
-  'AMAZON.HelpIntent': function(){
-    this.emit(':ask', HELP_MESSAGE, HELP_REPROMPT);
-  },
-  'AMAZON.CancelIntent': function(){
-    this.emit(':tell', STOP_MESSAGE);
-  },
-  'AMAZON.StopIntent': function(){
-    this.emit(':tell', STOP_MESSAGE);
-  },
-  'Unhandled': function(){
-    this.emit(':tell', HELP_MESSAGE)
-  }
-};
-
-exports.handler = (event, context, callback) => {
-  const alexa = Alexa.handler(event, context);
-  alexa.APP_ID = APP_ID;
-  alexa.registerHandlers(handlers);
-  alexa.execute();
-};
+exports.handler = skillBuilder
+  .addRequestHandlers(
+    GetNewFactHandler,
+    HelpHandler,
+    ExitHandler,
+    SessionEndedRequestHandler
+  )
+  .addErrorHandlers(ErrorHandler)
+  .lambda();
